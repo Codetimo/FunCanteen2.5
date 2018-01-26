@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.funcanteen.dao.PromotionMapper" >
+  <resultMap id="BaseResultMap" type="com.funcanteen.pojo.Promotion" >
+    <id column="promotionid" property="promotionid" jdbcType="INTEGER" />
+    <result column="proname" property="proname" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="DATE" />
+    <result column="windoid" property="windoid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    promotionid, proname, content, time, windoid
+  </sql>
+  
+  <select id="selProAll" resultMap="BaseResultMap">
+   select <include refid="Base_Column_List" /> from promotion
+  </select>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.funcanteen.pojo.PromotionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from promotion
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from promotion
+    where promotionid = #{promotionid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from promotion
+    where promotionid = #{promotionid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.funcanteen.pojo.PromotionExample" >
+    delete from promotion
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <insert id="addProByWindname" parameterType="com.funcanteen.pojo.Promotion">
+    insert into promotion (proname, content,time, windoid) 
+    values(#{proname}, #{content}, #{time}, #{windoid})
+  </insert>
+  
+  <insert id="insert" parameterType="com.funcanteen.pojo.Promotion" >
+    insert into promotion (promotionid, proname, content, 
+      time, windoid)
+    values (#{promotionid,jdbcType=INTEGER}, #{proname,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{time,jdbcType=DATE}, #{windoid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.funcanteen.pojo.Promotion" >
+    insert into promotion
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="promotionid != null" >
+        promotionid,
+      </if>
+      <if test="proname != null" >
+        proname,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="windoid != null" >
+        windoid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="promotionid != null" >
+        #{promotionid,jdbcType=INTEGER},
+      </if>
+      <if test="proname != null" >
+        #{proname,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=DATE},
+      </if>
+      <if test="windoid != null" >
+        #{windoid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.funcanteen.pojo.PromotionExample" resultType="java.lang.Integer" >
+    select count(*) from promotion
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update promotion
+    <set >
+      <if test="record.promotionid != null" >
+        promotionid = #{record.promotionid,jdbcType=INTEGER},
+      </if>
+      <if test="record.proname != null" >
+        proname = #{record.proname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=DATE},
+      </if>
+      <if test="record.windoid != null" >
+        windoid = #{record.windoid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update promotion
+    set promotionid = #{record.promotionid,jdbcType=INTEGER},
+      proname = #{record.proname,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=DATE},
+      windoid = #{record.windoid,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.funcanteen.pojo.Promotion" >
+    update promotion
+    <set >
+      <if test="proname != null" >
+        proname = #{proname,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=DATE},
+      </if>
+      <if test="windoid != null" >
+        windoid = #{windoid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where promotionid = #{promotionid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.funcanteen.pojo.Promotion" >
+    update promotion
+    set proname = #{proname,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      time = #{time,jdbcType=DATE},
+      windoid = #{windoid,jdbcType=INTEGER}
+    where promotionid = #{promotionid,jdbcType=INTEGER}
+  </update>
+</mapper>

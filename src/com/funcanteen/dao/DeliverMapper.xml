@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.funcanteen.dao.DeliverMapper" >
+  <resultMap id="BaseResultMap" type="com.funcanteen.pojo.Deliver" >
+    <id column="deliverid" property="deliverid" jdbcType="INTEGER" />
+    <result column="delivername" property="delivername" jdbcType="VARCHAR" />
+    <result column="deliverphone" property="deliverphone" jdbcType="VARCHAR" />
+    <result column="windid" property="windid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    deliverid, delivername, deliverphone, windid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.funcanteen.pojo.DeliverExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from deliver
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from deliver
+    where deliverid = #{deliverid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from deliver
+    where deliverid = #{deliverid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.funcanteen.pojo.DeliverExample" >
+    delete from deliver
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.funcanteen.pojo.Deliver" >
+    insert into deliver (deliverid, delivername, deliverphone, 
+      windid)
+    values (#{deliverid,jdbcType=INTEGER}, #{delivername,jdbcType=VARCHAR}, #{deliverphone,jdbcType=VARCHAR}, 
+      #{windid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.funcanteen.pojo.Deliver" >
+    insert into deliver
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deliverid != null" >
+        deliverid,
+      </if>
+      <if test="delivername != null" >
+        delivername,
+      </if>
+      <if test="deliverphone != null" >
+        deliverphone,
+      </if>
+      <if test="windid != null" >
+        windid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deliverid != null" >
+        #{deliverid,jdbcType=INTEGER},
+      </if>
+      <if test="delivername != null" >
+        #{delivername,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverphone != null" >
+        #{deliverphone,jdbcType=VARCHAR},
+      </if>
+      <if test="windid != null" >
+        #{windid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.funcanteen.pojo.DeliverExample" resultType="java.lang.Integer" >
+    select count(*) from deliver
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update deliver
+    <set >
+      <if test="record.deliverid != null" >
+        deliverid = #{record.deliverid,jdbcType=INTEGER},
+      </if>
+      <if test="record.delivername != null" >
+        delivername = #{record.delivername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliverphone != null" >
+        deliverphone = #{record.deliverphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.windid != null" >
+        windid = #{record.windid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update deliver
+    set deliverid = #{record.deliverid,jdbcType=INTEGER},
+      delivername = #{record.delivername,jdbcType=VARCHAR},
+      deliverphone = #{record.deliverphone,jdbcType=VARCHAR},
+      windid = #{record.windid,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.funcanteen.pojo.Deliver" >
+    update deliver
+    <set >
+      <if test="delivername != null" >
+        delivername = #{delivername,jdbcType=VARCHAR},
+      </if>
+      <if test="deliverphone != null" >
+        deliverphone = #{deliverphone,jdbcType=VARCHAR},
+      </if>
+      <if test="windid != null" >
+        windid = #{windid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where deliverid = #{deliverid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.funcanteen.pojo.Deliver" >
+    update deliver
+    set delivername = #{delivername,jdbcType=VARCHAR},
+      deliverphone = #{deliverphone,jdbcType=VARCHAR},
+      windid = #{windid,jdbcType=INTEGER}
+    where deliverid = #{deliverid,jdbcType=INTEGER}
+  </update>
+</mapper>

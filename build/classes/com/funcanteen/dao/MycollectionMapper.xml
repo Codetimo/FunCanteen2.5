@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.funcanteen.dao.MycollectionMapper" >
+       <select id="SelCollectionById" resultType="String" parameterType="Integer">
+        select content from mycollection where userid=#{userid}
+       </select>
+       <insert id="InsertCollectionById" parameterType="MyCollection">
+         insert into mycollection (content,userid) values (#{content},#{userid});
+       </insert>
+       
+       <delete id="delCollectionByDid" parameterType="map">
+        delete from mycollection where content =#{content} and userid=#{userid}
+       </delete>
+</mapper>

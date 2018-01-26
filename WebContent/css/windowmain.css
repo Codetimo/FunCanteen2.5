@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+.thumbnail {
+	MARGIN: auto;
+	WIDTH: 40px;
+}
+
+.thumbnail img {
+	MAX-WIDTH: 100% !important;
+	HEIGHT: auto !important;
+	width: expression(this.width > 40 ? "40px" : this.width) !important;
+}
+
+th {
+	text-align: center;
+}
+
+div#biaoti {
+	position: relative;
+	text-align: center;
+	position: relative;
+}
+
+div#daohang {
+	width: 800px;
+	height: 60px;
+	line-height: 60px;
+	position: relative;
+}
+
+div#biaoge {
+	width: 800px;
+	margin: 0 auto;
+}
+
+div#dianming {
+	width: 300px;
+	float: left;
+}
+
+div#sousuo {
+	width: 300px;
+	float: right;
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.funcanteen.dao.UseraddressMapper" >
+<select id="selAddByUserid" resultType="Useraddress" parameterType="Integer">
+ select  addid,address,userid from useraddress where userid=#{uid}
+</select>
+<select id="selAddByAddid" resultType="Useraddress" parameterType="Integer">
+ select addid,address,userid from useraddress where addid=#{addid}
+</select>
+<update id="upAddByAddid"  parameterType="map">
+ update useraddress set address=#{address} where addid=#{addid}
+</update>
+
+<insert id="inAddByUserid" parameterType="map">
+  INSERT INTO useraddress ( address, userid) VALUES ( #{address},#{userid});
+</insert>
+
+<delete id="delAddByAddid" parameterType="Integer">
+  delete from useraddress where addid=#{addid}
+</delete>
+</mapper>

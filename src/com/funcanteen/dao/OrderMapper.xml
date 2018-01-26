@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.funcanteen.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.funcanteen.pojo.Order" >
+    <id column="orderid" property="orderid" jdbcType="INTEGER" />
+    <result column="dishesid" property="dishesid" jdbcType="INTEGER" />
+    <result column="dishname" property="dishname" jdbcType="VARCHAR" />
+    <result column="addresses" property="addresses" jdbcType="VARCHAR" />
+    <result column="windid" property="windid" jdbcType="INTEGER" />
+    <result column="deliverid" property="deliverid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    orderid, dishesid, dishname, addresses,windid,deliverid,userid
+  </sql>
+  <select id="selOrderAll" resultMap="BaseResultMap">
+   select <include refid="Base_Column_List" /> from orders
+  </select>
+  
+  <select id="selOrderByUid" resultMap="BaseResultMap" parameterType="Integer">
+   select <include refid="Base_Column_List" />
+   from orders
+   where userid=#{userid}
+  </select>
+  
+  <select id="selDidByOid" resultType="Integer" parameterType="Integer">
+    select  deliver.deliverid from orders, deliver where orders.windid=deliver.windid and orders.orderid=#{orderid}
+  </select>
+  
+  <select id="selOrderByWindid" resultMap="BaseResultMap" parameterType="INTEGER">
+   select orderid, dishesid, dishname, addresses,windid,deliverid from orders where windid=#{windid}
+  </select> 
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.funcanteen.pojo.OrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from orders
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="delByUid" parameterType="java.lang.Integer">
+    delete from orders
+    where userid = #{userid,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from orders
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.funcanteen.pojo.OrderExample" >
+    delete from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.funcanteen.pojo.Order" >
+    insert into orders ( dishesid, dishname, 
+      addresses,windid,userid)
+    values ( #{dishesid,jdbcType=INTEGER}, #{dishname,jdbcType=VARCHAR}, 
+      #{addresses,jdbcType=VARCHAR},#{windid,jdbcType=INTEGER},#{userid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.funcanteen.pojo.Order" >
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="dishesid != null" >
+        dishesid,
+      </if>
+      <if test="dishname != null" >
+        dishname,
+      </if>
+      <if test="addresses != null" >
+        addresses,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="dishesid != null" >
+        #{dishesid,jdbcType=INTEGER},
+      </if>
+      <if test="dishname != null" >
+        #{dishname,jdbcType=VARCHAR},
+      </if>
+      <if test="addresses != null" >
+        #{addresses,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.funcanteen.pojo.OrderExample" resultType="java.lang.Integer" >
+    select count(*) from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="upOrderByOid" parameterType="map">
+     update orders set deliverid=#{deliverid} where orderid=#{orderid}
+  </update>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orders
+    <set >
+      <if test="record.orderid != null" >
+        orderid = #{record.orderid,jdbcType=INTEGER},
+      </if>
+      <if test="record.dishesid != null" >
+        dishesid = #{record.dishesid,jdbcType=INTEGER},
+      </if>
+      <if test="record.dishname != null" >
+        dishname = #{record.dishname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addresses != null" >
+        addresses = #{record.addresses,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orders
+    set orderid = #{record.orderid,jdbcType=INTEGER},
+      dishesid = #{record.dishesid,jdbcType=INTEGER},
+      dishname = #{record.dishname,jdbcType=VARCHAR},
+      addresses = #{record.addresses,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.funcanteen.pojo.Order" >
+    update orders
+    <set >
+      <if test="dishesid != null" >
+        dishesid = #{dishesid,jdbcType=INTEGER},
+      </if>
+      <if test="dishname != null" >
+        dishname = #{dishname,jdbcType=VARCHAR},
+      </if>
+      <if test="addresses != null" >
+        addresses = #{addresses,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.funcanteen.pojo.Order" >
+    update orders
+    set dishesid = #{dishesid,jdbcType=INTEGER},
+      dishname = #{dishname,jdbcType=VARCHAR},
+      addresses = #{addresses,jdbcType=VARCHAR}
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </update>
+</mapper>
